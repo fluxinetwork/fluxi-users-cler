@@ -20,7 +20,7 @@ function fluxi_create_user(){
 	// Verify nonce
 	if ( isset( $_POST['fluxi_new_user_nonce_field'] ) && wp_verify_nonce( $_POST['fluxi_new_user_nonce_field'], 'fluxi_new_user' )) :
 		// Verify email & token
-		if (preg_match('#^[\w.-]+@[\w.-]+\.[a-z]{2,6}$#i', $mail_user) && is_numeric($toky_toky) && $toky_toky == 9274565543):
+		if (filter_var($mail_user, FILTER_VALIDATE_EMAIL) && is_numeric($toky_toky) && $toky_toky == 9274565543):
 			// Clean vars
 			$nom = filter_var($_POST['nom'], FILTER_SANITIZE_STRING);
 			$prenom = filter_var($_POST['prenom'], FILTER_SANITIZE_STRING);
