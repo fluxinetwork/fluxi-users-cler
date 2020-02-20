@@ -52,7 +52,7 @@ function fluxi_update_user(){
 				if ( $current_user->user_email != $email ):		
 					
 					// Send security mail
-					$mail_vars_update_email = array($email, $prenom, $refer_url);
+					$mail_vars_update_email = array($email, $prenom, $refer_url, get_footer_mail());
 					notify_by_mail (array($email), 'Le CLER <' . CONTACT_GENERAL . '>', 'Votre adresse email vient d\'être modifiée', true, FU_PLUGIN_DIR . '/mails/user-update-email.php', $mail_vars_update_email);	
 
 					// Clear auth cache		

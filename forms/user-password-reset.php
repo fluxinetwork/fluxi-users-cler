@@ -40,7 +40,7 @@ function fluxi_password_reset_user(){
 					wp_set_password( $password_user, $user->ID );			
 						
 					// Send security mail
-					$mail_vars_reset_password = array($email, $user->first_name, $refer_url, $password_user);
+					$mail_vars_reset_password = array($email, $user->first_name, $refer_url, $password_user, get_footer_mail());
 					notify_by_mail (array($email), 'CLER - Réseau pour la transition énergétique <' . CONTACT_GENERAL . '>', 'Votre mot de passe vient d\'être réinitialisé', true, FU_PLUGIN_DIR . '/mails/user-reset-password.php', $mail_vars_reset_password);	
 
 					// Clear auth cache		

@@ -4,12 +4,14 @@ $email;
 $prenom;
 $refer_url;
 $password;
+$footer_mail;
 
 if ( $vars ) :    
   	$email = $vars[0];  	
   	$prenom = $vars[1];
   	$refer_url = $vars[2];
     $password = $vars[3];
+    $footer_mail = $vars[4];
 endif;
 
 

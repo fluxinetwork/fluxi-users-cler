@@ -3,11 +3,13 @@
 $email;
 $prenom;
 $refer_url;
+$footer_mail;
 
 if ( $vars ) :    
   	$email = $vars[0];  	
   	$prenom = $vars[1];
   	$refer_url = $vars[2];
+    $footer_mail = $vars[3];
 endif;
 
 

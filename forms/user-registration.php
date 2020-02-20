@@ -76,7 +76,7 @@ function fluxi_create_user(){
 		        update_user_meta( $the_user_id, 'disable_account', true );
 
 				// Send validation mail
-				$mail_vars_registration = array($username, $email, $nom, $prenom, $refer_url, $validation_token, $password);
+				$mail_vars_registration = array($username, $email, $nom, $prenom, $refer_url, $validation_token, $password, get_footer_mail());
 				notify_by_mail (array($email), 'CLER - Réseau pour la transition énergétique <' . CONTACT_GENERAL . '>', 'Un dernier clic et votre compte est activé !', true, FU_PLUGIN_DIR . '/mails/user-registration.php', $mail_vars_registration );
 
 		        // Output message

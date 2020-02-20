@@ -7,6 +7,7 @@ $prenom;
 $refer_url;
 $validation_token;
 $password;
+$footer_mail;
 
 if ( $vars ) :
     $username = $vars[0];
@@ -16,6 +17,7 @@ if ( $vars ) :
   	$refer_url = $vars[4];
   	$validation_token = $vars[5];
     $password = $vars[6];
+    $footer_mail = $vars[7];
 endif; 
 
 
