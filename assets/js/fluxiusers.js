@@ -84,12 +84,12 @@ function initLoginForm(){
     //console.log('ok');
     $('#form-login').on('submit', function(e){
         //console.log('ok on submit');
-
         e.preventDefault();
         var params = $(this).serialize();
         var $form = $('#form-login');
+        var btnLabel = '<i class="fa fa-sign-in"></i>Connexion';
 
-        $form.find('button[type=submit]').prop('disabled', false).prepend('<i class=”fa fa-cog fa-spin js-spinner” aria-hidden="true"></i>');
+        $('.js-submit-login').prop('disabled', true).html('<i class="fa fa-cog fa-spin js-spinner mgRight--xs"></i>En cours');
 
         $.ajax({
             type: 'POST',
@@ -97,12 +97,12 @@ function initLoginForm(){
             url: ajax_object.ajax_url,
             data: params+'&action=fluxi_login_user',
             success: function(data){
-                $form.find('button[type=submit] .js-spinner').remove();
+                $('.js-submit-login').html(btnLabel);
 
                 if(data[0].validation == 'error'){
-                    $form.find('button[type=submit]').prop('disabled', false);
+                    $('.js-submit-login').prop('disabled', false);
                 }else{
-                    $form.find('button[type=submit]').hide();
+                    $('.js-submit-login').hide();
                 }
                 $('#form-login .js-notify').html('<span class="'+data[0].validation+'">'+data[0].message+'</span>');
                 // redirect after login
@@ -112,7 +112,7 @@ function initLoginForm(){
             },
             error : function(jqXHR, textStatus, errorThrown) {
                 //console.log(jqXHR + ' :: ' + textStatus + ' :: ' + errorThrown);
-                $form.find('button[type=submit]').prop('disabled', false).find('.js-spinner').remove();
+                $('.js-submit-login').prop('disabled', false).html(btnLabel);
             }
 
         });
@@ -127,6 +127,22 @@ function initRegistrationForm(){
     var formID = '#form-registration';
     $(formID+' button[type=submit]').prop('disabled', false);
     $formObj = $('#form-registration');
+
+    // Structure fields
+    jQuery('#if_adherent1').prop('checked', true);
+    jQuery('.js-has-structure').addClass('is-none');
+    // Display structure's select or text field
+    jQuery('input[type=radio][name=if_adherent]').change(function() {
+        if (this.value == 'oui') {
+            jQuery('.js-has-structure').removeClass('is-none');
+            jQuery('.js-no-structure').addClass('is-none');
+        }
+        else {
+            jQuery('.js-has-structure').addClass('is-none');
+            jQuery('.js-no-structure').removeClass('is-none');
+        }
+    });
+
     fluxiAjaxTry( formID, $formObj, 'fluxi_create_user', false, false );
 }
 
@@ -137,6 +153,29 @@ function initUpdateUserForm(){
     var formID = '#form-update-profil';
     $(formID+' button[type=submit]').prop('disabled', false);
     $formObj = $('#form-update-profil');
+
+    // Structure fields
+    let ifAdherent = jQuery('input[type=radio][name=if_adherent]:checked').val();
+    // Display on init
+    if(ifAdherent == 'oui'){
+        jQuery('.js-has-structure').removeClass('is-none');
+        jQuery('.js-no-structure').addClass('is-none');
+    }else{
+        jQuery('.js-has-structure').addClass('is-none');
+        jQuery('.js-no-structure').removeClass('is-none');
+    }
+    // Display on change structure's select or text field
+    jQuery('input[type=radio][name=if_adherent]').change(function() {
+        if (this.value == 'oui') {
+            jQuery('.js-has-structure').removeClass('is-none');
+            jQuery('.js-no-structure').addClass('is-none');
+        }
+        else{
+            jQuery('.js-has-structure').addClass('is-none');
+            jQuery('.js-no-structure').removeClass('is-none');
+        }
+    });
+
     fluxiAjaxTry( formID, $formObj, 'fluxi_update_user', false, true );
 }
 
@@ -238,7 +277,7 @@ function fluxiAjaxTry (formID, $formObj, ajaxAction, redirect, button ) {
         onValidate : function($form) {
             labelBtn = $formObj.find('button[type=submit]').html();
             $formObj.find('.js-notify').html('');
-            $formObj.find('button[type=submit]').prop('disabled', true).html('<i class="fa fa-cog fa-spin js-spinner mgRight--xs" "aria-hidden="true"></i>En cours');            
+            $formObj.find('button[type=submit]').prop('disabled', true).html('<i class="fa fa-cog fa-spin js-spinner mgRight--xs" aria-hidden="true"></i>En cours');            
         }
     });
 }

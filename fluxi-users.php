@@ -218,7 +218,7 @@ if( ! class_exists('fluxiusers') ) :
 	require_once(  FU_PLUGIN_DIR . 'forms/user-login.php' );	
 	require_once(  FU_PLUGIN_DIR . 'forms/user-registration.php' );
 	require_once(  FU_PLUGIN_DIR . 'forms/admin-user-registration.php' );
-	require_once(  FU_PLUGIN_DIR . 'forms/user-confirmation.php' );	
+	//require_once(  FU_PLUGIN_DIR . 'forms/user-confirmation.php' ); // Géré dans le theme	
 	require_once(  FU_PLUGIN_DIR . 'forms/user-update.php' );	
 	require_once(  FU_PLUGIN_DIR . 'forms/user-password-reset.php' );	
 

@@ -8,6 +8,8 @@ $refer_url;
 $validation_token;
 $password;
 $footer_mail;
+$if_adherent;
+$nom_structure_adherente;
 
 if ( $vars ) :
     $username = $vars[0];
@@ -18,6 +20,8 @@ if ( $vars ) :
   	$validation_token = $vars[5];
     $password = $vars[6];
     $footer_mail = $vars[7];
+    $if_adherent = $vars[8];
+    $nom_structure_adherente = $vars[9];
 endif; 
 
 
@@ -50,8 +54,14 @@ $contenu_mail = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
                     
                     <p style="text-align:center;"><a style="padding: 30px;color: #fff; display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; border-radius: 100px; text-decoration: none; background-color:#00c15f;" href="'.$refer_url.'/confirme-utilisateur/?utilisateur='.urlencode($email).'&confirme_utilisateur='.$validation_token.'">Activer le compte utilisateur</a></p>                    
 
-                    <p style="font-family: gotham,helvetica,arial,sans-serif;font-size:14px;padding:20px 0; color:#999;line-height: 20px;">Vous pourrez ensuite vous connecter au site et accéder à votre profil.</p>
-                  </td>
+                    <p style="font-family: gotham,helvetica,arial,sans-serif;font-size:14px;padding:0; color:#999;line-height: 20px;">Vous pourrez ensuite vous connecter au site et accéder à votre profil.</p>';
+
+
+                    if($if_adherent === 'oui' && $nom_structure_adherente != ''):
+                      $contenu_mail .='<p style="font-family: gotham,helvetica,arial,sans-serif;font-size:14px;padding:20px 0; color:#000;line-height: 20px;">Vous avez indiqué faire partie de la structure "'.$nom_structure_adherente.'". Après activation de votre compte, une notification sera envoyée à l\'administrateur de votre structure afin qu\'il valide l\'extension de vos droits d\'accès.</p>';
+                    endif;
+
+$contenu_mail .='</td>
                 </tr>
               </table>
               '.$footer_mail.'

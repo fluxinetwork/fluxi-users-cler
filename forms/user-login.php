@@ -102,15 +102,12 @@ function fluxi_login_user(){
 						    'rememember'    => true
 						);
 
-						// ATTENTION !!!!!!!! MODIFIER EN CAS DE MAJ ONLINE !!!!!!!!!!
-						/************************ !!!!!!!!!!!!!!!!!!!!!!!!! ******* ********************/ 
 						// If --> HTTP
 						$user = wp_signon( $creds, false );
 
 						// If --> HTTPS
 						//$user = wp_signon( $creds, true );
-						/************************ !!!!!!!!!!!!!!!!!!!!!!!!! ******* ********************/
-
+						
 						if ( is_wp_error( $user ) ) :
 						    // Return if wordpress error
 						    $data = array(

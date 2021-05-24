@@ -28,6 +28,10 @@ function fluxi_create_user(){
 			//$username = filter_var($_POST['username'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
 			$password = $_POST['password'];
 
+			// Structure
+			$if_adherent = filter_var($_POST['if_adherent'], FILTER_SANITIZE_STRING);
+			$fonction = filter_var($_POST['fonction'], FILTER_SANITIZE_STRING);
+
 			// Create login
 			$username = $prenom.''.$nom.'-'.mt_rand(1,10000);
 
@@ -75,8 +79,28 @@ function fluxi_create_user(){
 		        update_user_meta( $the_user_id, 'account_status', 'Non confirmé' );
 		        update_user_meta( $the_user_id, 'disable_account', true );
 
+		        $url_lien_activation_compte = $refer_url.'/confirme-utilisateur/?utilisateur='.urlencode($email).'&confirme_utilisateur='.$validation_token;
+		        update_user_meta( $the_user_id, 'lien_activation_compte', $url_lien_activation_compte );
+		        
+
+		        // Structure
+		        $nom_structure_adherente = '';
+		        update_user_meta( $the_user_id, 'if_adherent', $if_adherent );
+		        update_user_meta( $the_user_id, 'fonction', $fonction );
+		        if($if_adherent === 'oui'):
+		        	$id_structure_adherente = filter_var($_POST['structure_adherente'], FILTER_SANITIZE_NUMBER_INT);
+		        	$nom_structure_adherente = get_the_title($id_structure_adherente);
+		        	update_user_meta( $the_user_id, 'structure_adherente', $id_structure_adherente );
+		        	update_user_meta( $the_user_id, 'role_utilisateur_structure', 'Statut en cours de validation' );
+		        else:
+		        	$autre_nom_structure = filter_var($_POST['autre_nom_structure'], FILTER_SANITIZE_STRING);
+		        	if($autre_nom_structure):
+		        		update_user_meta( $the_user_id, 'autre_nom_structure', $autre_nom_structure );
+		        	endif;
+		        endif;
+
 				// Send validation mail
-				$mail_vars_registration = array($username, $email, $nom, $prenom, $refer_url, $validation_token, $password, get_footer_mail());
+				$mail_vars_registration = array($username, $email, $nom, $prenom, $refer_url, $validation_token, $password, get_footer_mail(),$if_adherent,$nom_structure_adherente);
 				notify_by_mail (array($email), 'CLER - Réseau pour la transition énergétique <' . CONTACT_GENERAL . '>', 'Un dernier clic et votre compte est activé !', true, FU_PLUGIN_DIR . '/mails/user-registration.php', $mail_vars_registration );
 
 		        // Output message
