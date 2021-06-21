@@ -103,10 +103,10 @@ function fluxi_login_user(){
 						);
 
 						// If --> HTTP
-						$user = wp_signon( $creds, false );
+						//$user = wp_signon( $creds, false );
 
 						// If --> HTTPS
-						//$user = wp_signon( $creds, true );
+						$user = wp_signon( $creds, true );
 						
 						if ( is_wp_error( $user ) ) :
 						    // Return if wordpress error
