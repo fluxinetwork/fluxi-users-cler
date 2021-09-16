@@ -55,15 +55,17 @@ function fluxi_update_user(){
 				$fonction = filter_var($_POST['fonction'], FILTER_SANITIZE_STRING);		        
 		        update_user_meta( $the_user_id, 'fonction', $fonction );
 
-		        // Structure
+		        // STRUCTURE
 		        $if_adherent = filter_var($_POST['if_adherent'], FILTER_SANITIZE_STRING);
 		        if($if_adherent === 'oui'):
 
+		        	// Structure infos
 		        	$id_structure_adherente = filter_var($_POST['structure_adherente'], FILTER_SANITIZE_NUMBER_INT);
 
 					// Test if there is previous structure value
 		        	$last_structure_id = (get_user_meta($current_user->ID, 'structure_adherente', true)) ? get_user_meta($current_user->ID, 'structure_adherente', true) : false;
 
+		        	// Modify structure infos
 		        	if($last_structure_id != $id_structure_adherente):
 		        		// Update user statut
 						update_user_meta( $the_user_id, 'role_utilisateur_structure', 'Statut en cours de validation' );
@@ -95,6 +97,7 @@ function fluxi_update_user(){
 		        	update_user_meta( $the_user_id, 'autre_nom_structure', '' );
 
 		        else:
+		        	// No structure or "other structure"
 		        	$autre_nom_structure = filter_var($_POST['autre_nom_structure'], FILTER_SANITIZE_STRING);
 		        	if($autre_nom_structure):
 		        		update_user_meta( $the_user_id, 'autre_nom_structure', $autre_nom_structure );
@@ -111,7 +114,28 @@ function fluxi_update_user(){
 
 					// Clear auth cache		
 				    wp_clear_auth_cookie();
-				endif;		
+				endif;
+
+
+		        //////////////////////
+		        //  UPDATE KENTIKA  //
+		        //////////////////////
+		        if( is_adherent_cler() || is_adherent_member_structure() ):
+
+		        	$nom_structure_kentika = (isset($id_structure_adherente)) ? get_the_title($id_structure_adherente) : '';
+
+		        	$params_kentika = [
+		        		'id_user'				=> $current_user->user_login,
+		        		'status_query'			=> 'ajouter_modifier',
+		        		'nom_user_kentika' 		=> $nom,
+		       			'prenom_user_kentika' 	=> $prenom,
+		       			'mail_user_kentika' 	=> $email,
+		       			'structure_user_kentika' => $nom_structure_kentika
+		        	];
+
+		        	fluxi_update_user_kentika($params_kentika);
+		        endif;
+
 			endif;
 
 		else:
@@ -153,6 +177,39 @@ function fluxi_update_user(){
 add_action('wp_ajax_nopriv_fluxi_update_user', 'fluxi_update_user');
 add_action('wp_ajax_fluxi_update_user', 'fluxi_update_user');
 
+
+/* 
+ * Update Kentika account
+ */
+if (!function_exists('fluxi_update_user_kentika')):
+	function fluxi_update_user_kentika($params){
+		$id_user = 'yrolland';
+		// $id_user = (array_key_exists('id_user', $params)) ? $params['id_user'] : ''; // login yrolland
+		$status_query = (array_key_exists('status_query', $params)) ? $params['status_query'] : '';
+		// Require user ID and query status
+		if($id_user && $status_query):
+
+			$nom_user_kentika = (array_key_exists('nom_user_kentika', $params)) ? $params['nom_user_kentika'] : '';
+			$prenom_user_kentika = (array_key_exists('prenom_user_kentika', $params)) ? $params['prenom_user_kentika'] : '';
+			$mail_user_kentika = (array_key_exists('mail_user_kentika', $params)) ? $params['mail_user_kentika'] : '';
+			$structure_user_kentika = (array_key_exists('structure_user_kentika', $params)) ? $params['structure_user_kentika'] : '';		
+
+			$params = '?id='.$id_user.'&status='.$status_query.'&nom='.$nom_user_kentika.'&prenom='.$prenom_user_kentika.'&mail='.$mail_user_kentika.'&structure='.$structure_user_kentika;
+
+			$response = wp_remote_get( 'http://www.doc-transition-energetique.info/getToken.txt'.$params, array(
+			    'method'      => 'GET',
+			    'timeout'     => 10,
+			    'redirection' => 5,
+			    'httpversion' => '1.0',
+			    'blocking'    => true,
+			    'headers'     => array(),
+			    'cookies'     => array()
+			    )
+			);
+			
+		endif;
+	}
+endif;
 
 
 /* 
