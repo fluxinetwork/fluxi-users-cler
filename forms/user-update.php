@@ -184,8 +184,8 @@ add_action('wp_ajax_fluxi_update_user', 'fluxi_update_user');
 if (!function_exists('fluxi_update_user_kentika')):
 	function fluxi_update_user_kentika($params){
 
-		$id_user = 'yrolland';
-		// $id_user = (array_key_exists('id_user', $params)) ? $params['id_user'] : ''; // login yrolland
+		// $id_user = 'yrolland';
+		$id_user = (array_key_exists('id_user', $params)) ? $params['id_user'] : ''; // login yrolland
 		
 		$status_query = (array_key_exists('status_query', $params)) ? $params['status_query'] : '';
 		// Require user ID and query status
