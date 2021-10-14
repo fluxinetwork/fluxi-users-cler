@@ -120,7 +120,7 @@ function fluxi_update_user(){
 		        //////////////////////
 		        //  UPDATE KENTIKA  //
 		        //////////////////////
-		        if( is_adherent_cler() || is_adherent_member_structure() ):
+		        if( is_adherent_cler() || is_adherent_member_structure() || current_user_can('administrator') || current_user_can('subadmin') ):
 
 		        	$nom_structure_kentika = (isset($id_structure_adherente)) ? get_the_title($id_structure_adherente) : '';
 
