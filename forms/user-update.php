@@ -198,7 +198,7 @@ if (!function_exists('fluxi_update_user_kentika')):
 
 			$params = '?id='.$id_user.'&status='.$status_query.'&nom='.$nom_user_kentika.'&prenom='.$prenom_user_kentika.'&mail='.$mail_user_kentika.'&structure='.$structure_user_kentika;
 
-			$response = wp_remote_get( 'http://www.doc-transition-energetique.info/getToken.txt'.$params, array(
+			$response = wp_remote_get( 'https://www.doc-transition-energetique.info/getToken.txt'.$params, array(
 			    'method'      => 'GET',
 			    'timeout'     => 10,
 			    'redirection' => 5,
