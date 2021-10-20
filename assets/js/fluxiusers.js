@@ -111,7 +111,7 @@ function initLoginForm(){
                 }, 500);
             },
             error : function(jqXHR, textStatus, errorThrown) {
-                //console.log(jqXHR + ' :: ' + textStatus + ' :: ' + errorThrown);
+                console.log(jqXHR + ' :: ' + textStatus + ' :: ' + errorThrown);
                 $('.js-submit-login').prop('disabled', false).html(btnLabel);
             }
 

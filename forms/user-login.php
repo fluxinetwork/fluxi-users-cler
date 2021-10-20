@@ -116,7 +116,7 @@ function fluxi_login_user(){
 							);	
 						else:
 							// Connexion & redirect
-							if(wp_get_referer() == '/connexion/' || wp_get_referer() == '/confirme-utilisateur/' || wp_get_referer() == '/connexion/?login=requis'){
+							if(wp_get_referer() == '/connexion/' || wp_get_referer() == '/confirme-utilisateur/' || wp_get_referer() == '/connexion/?login=requis' || wp_get_referer() == '/'){
 								$redirect = home_url();
 							}else{
 								$redirect = wp_get_referer();
